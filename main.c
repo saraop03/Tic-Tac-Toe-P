@@ -2,79 +2,11 @@
 #include "matdin.h"
 #include "utils.h"
 
-typedef struct jogadass jogadas, *pjogadas;
-
-struct jogadass{
-    int jogador , l , c;
-    pjogadas prox;
-};
-
-void preenche(pjogadas p, int jogador, int l, int c){
-    if(jogador==1)
-        jogador=2;
-    else
-        jogador=1;
-    p->jogador = jogador;
-    p->l = l;
-    p->c = c;
-    p->prox = NULL;
-}
-
-pjogadas insere_final (pjogadas p, int jogador, int l, int c) {
-    pjogadas novo, aux;
-    novo = malloc(sizeof(jogadas));
-    if (novo == NULL){
-        printf("Erro na alocação de memória");
-        return p;
-    }
-    preenche(novo,jogador,l,c);
-    if(p == NULL){
-        p = novo;
-    }
-    else{
-        aux = p;
-        while(aux->prox != NULL)
-            aux = aux->prox;
-        aux->prox = novo;
-    }
-    return p;
-}
-
-void verJogadas(int njogadas, pjogadas p){
-    pjogadas novo;
-    int conta_total = 0 , conta_sub = 0 , pos = 0, i = njogadas;
-
-    novo = p;
-    if (novo == NULL)
-        printf("nulo");
-
-    while(novo->prox != NULL){
-        conta_total++;
-        novo = novo->prox;
-
-    }
-    novo = p;
-
-    conta_sub = conta_total - njogadas;
-    if (novo == NULL)
-        printf("Nulo\n");
-    while (novo != NULL){
-        if (pos > conta_sub) {
-            if (novo->jogador == 1)
-                printf("\nO jogador 2 inseriu as coordenadas (%d,%d)\n", novo->l, novo->c);
-            else
-                printf("\nO jogador 1 inseriu as coordenadas (%d,%d)\n", novo->l, novo->c);
-        }
-        pos++;
-        novo = novo->prox;
-    }
-}
-
 int main() {
     pjogadas jogo = NULL;
     char **tabuleiro, **tabuleiroG;
     int l , c , la = 0 , ca = 0 , jogada , njogadal = 0 , saltar = 0 , sucesso = 0 , jogador = 1 , col , lin , vitoria = 0;
-    int verJ , menu , op , realizar;
+    int op;
 
     initRandom();
 
@@ -94,45 +26,19 @@ int main() {
 
         do {
             if (jogador == 1) {
-                printf("\nPrima 0 se pretende aceder ao menu:");
-                scanf("%d", &menu);
-                if (menu == 0) {
-                    printf("0- Continuar jogo\n");
-                    printf("1- Verificar jogadas\n");
-                    printf("2- Sair\n");
-                    printf("O que pretende realizar?");
-                    scanf("%d", &realizar);
-                    if ( realizar == 1) {
-                        printf("Quantas jogadas pretende visualizar?");
-                        scanf("%d",&verJ);
-                        verJogadas(verJ, jogo);
-                    }
-                    if (realizar == 2)
-                        break;
-                }
-                printf("\nJogador 1 pode realizar a sua jogada\n");
+                if (jogo == NULL){}
+                else
+                    menuJ(jogo);
 
+                printf("\nJogador 1 pode realizar a sua jogada\n");
                 jogada = 1;
                 jogador = 2;
             } else if (jogador == 2) {
-                printf("\nPrima 0 se pretende aceder ao menu:");
-                scanf("%d", &menu);
-                if (menu == 0) {
-                    printf("0- Continuar jogo\n");
-                    printf("1- Verificar jogadas\n");
-                    printf("2- Sair\n");
-                    printf("O que pretende realizar?");
-                    scanf("%d", &realizar);
-                    if ( realizar == 1) {
-                        printf("Quantas jogadas pretende visualizar?");
-                        scanf("%d",&verJ);
-                        verJogadas(verJ, jogo);
-                    }
-                    if (realizar == 2)
-                        break;
-                }
-                printf("\nJogador 2 pode realizar a sua jogada\n");
+                if (jogo == NULL){}
+                else
+                    menuJ(jogo);
 
+                printf("\nJogador 2 pode realizar a sua jogada\n");
                 jogada = 2;
                 jogador = 1;
             }
@@ -524,29 +430,17 @@ int main() {
         //Guardar em ficheiro de texto
     }
     else if(op == 2) {
-        printf("Está a jogar contra o computador");
+        printf("Está a jogar contra o computador\n");
 
             tabuleiro = criaMat(9, 9);
             tabuleiroG = criaMat(3,3);
 
             do {
                 if (jogador == 1) {
-                    printf("\nPrima 0 se pretende aceder ao menu:");
-                    scanf("%d", &menu);
-                    if (menu == 0) {
-                        printf("0- Continuar jogo\n");
-                        printf("1- Verificar jogadas\n");
-                        printf("2- Sair\n");
-                        printf("O que pretende realizar?");
-                        scanf("%d", &realizar);
-                        if ( realizar == 1) {
-                            printf("Quantas jogadas pretende visualizar?");
-                            scanf("%d",&verJ);
-                            verJogadas(verJ, jogo);
-                        }
-                        if (realizar == 2)
-                            break;
-                    }
+                    if (jogo == NULL){}
+                    else
+                        menuJ(jogo);
+
                     printf("\nJogador 1 pode realizar a sua jogada\n");
 
                     jogada = 1;

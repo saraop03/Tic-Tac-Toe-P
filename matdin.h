@@ -52,4 +52,21 @@ void foraC(char **tabuleiro, int *l, int *c);
 int cheioC(char **tabuleiro, int l, int c);
 
 //menu
+
+typedef struct jogadass jogadas, *pjogadas;
+
+struct jogadass{
+    int jogador , l , c;
+    pjogadas prox;
+};
+
+void menuJ(pjogadas jogo);
+
+void verJogadas(int njogadas, pjogadas p);
+
+pjogadas insere_final (pjogadas p, int jogador, int l, int c);
+
+void preenche(pjogadas p, int jogador, int l, int c);
+
+
 #endif
