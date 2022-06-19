@@ -1,42 +1,80 @@
 #include <stdio.h>
 #include "matdin.h"
 #include "utils.h"
+#include "menu.h"
+#include "jogar.h"
 
 int main() {
     pjogadas jogo = NULL;
-    char **tabuleiro, **tabuleiroG;
-    int l , c , la = 0 , ca = 0 , jogada , njogadal = 0 , saltar = 0 , sucesso = 0 , jogador = 1 , col , lin , vitoria = 0;
+    char **tabuleiro, **tabuleiroG, nomeF;
+    int l , c , la = 0 , ca = 0 , jogada , njogadal = 0 , saltar = 0 , sucesso = 0 , jogador = 1 , col , lin , vitoria = 0, sair = 0;
     int op;
 
+
+    tabuleiro = criaMat(9, 9);
+    tabuleiroG = criaMat(3,3);
     initRandom();
 
     printf("-----------------------------\n");
     printf("Menu:\n");
     printf("1- Jogar contra pessoa\n");
     printf("2- Jogar contra computador\n");
+    printf("3- Continuar jogo anterior\n");
     printf("-----------------------------\n\n");
     printf("Opção:");
     scanf("%d",&op);
+    if(op == 3){
+        tabuleiro = criaMat(9, 9);
+        leDados(&jogo, &njogadal);
+        //teste(jogo);
+        while (jogo != NULL){
+            if (jogo->jogador == 1) {
+                jogo->jogador = 2;
+                colocaJogada(tabuleiro, jogo->l, jogo->c, jogo->jogador);
+                printf("%d,%d\n",jogo->l,jogo->c);
+            }
+            else{
+                jogo->jogador = 1;
+                colocaJogada(tabuleiro,jogo->l,jogo->c,jogo->jogador);
+                printf("%d,%d\n",jogo->l,jogo->c);
+            }
 
+            jogo = jogo->prox;
+        }
+        mostraMat(tabuleiro,9,9);
+        int esc;
+        printf("1- Jogar contra pessoa\n");
+        printf("2- Jogar contra computador\n");
+        scanf("%d",&esc);
+        if(esc == 1)
+            op = 1;
+        else
+            if(esc == 2)
+            op = 2;
+    }
     if(op == 1) {
         printf("Está a jogar contra uma pessoa\n");
 
-        tabuleiro = criaMat(9, 9);
-        tabuleiroG = criaMat(3,3);
 
         do {
             if (jogador == 1) {
                 if (jogo == NULL){}
-                else
-                    menuJ(jogo);
+                else {
+                    menuJ(jogo, njogadal, &sair);
+                    if (sair == 1)
+                        break;
+                }
 
                 printf("\nJogador 1 pode realizar a sua jogada\n");
                 jogada = 1;
                 jogador = 2;
             } else if (jogador == 2) {
                 if (jogo == NULL){}
-                else
-                    menuJ(jogo);
+                else {
+                    menuJ(jogo, njogadal, &sair);
+                    if (sair == 1)
+                        break;
+                }
 
                 printf("\nJogador 2 pode realizar a sua jogada\n");
                 jogada = 2;
@@ -419,27 +457,31 @@ int main() {
                 jogo = insere_final(jogo, jogador, l, c);
 
                 if (verificaVitG(tabuleiroG,0,0) == 1)
-                {
-                    printf("Fim do jogo");
                     vitoria = 1;
-                }
                 else
                     vitoria = 0;
-
         } while (vitoria != 1);
         //Guardar em ficheiro de texto
+        if (vitoria == 1) {
+            printf("Insira o nome com o qual quer guardar o ficheiro:\t");
+            scanf("%s", &nomeF);
+
+            if (grava_lista(jogo, &nomeF) == 1)
+                printf("Ficheiro guardado com sucesso");
+        }
     }
     else if(op == 2) {
         printf("Está a jogar contra o computador\n");
 
-            tabuleiro = criaMat(9, 9);
-            tabuleiroG = criaMat(3,3);
 
             do {
                 if (jogador == 1) {
                     if (jogo == NULL){}
-                    else
-                        menuJ(jogo);
+                    else {
+                        menuJ(jogo, njogadal, &sair);
+                        if (sair == 1)
+                            break;
+                    }
 
                     printf("\nJogador 1 pode realizar a sua jogada\n");
 
@@ -1106,5 +1148,12 @@ int main() {
 
             } while (vitoria != 1);
             //Guardar em ficheiro de texto
+            if (vitoria == 1) {
+                printf("Insira o nome com o qual quer guardar o ficheiro:\t");
+                scanf("%s", &nomeF);
+
+                if (grava_lista(jogo, &nomeF) == 1)
+                    printf("Ficheiro guardado com sucesso");
+            }
         }
     }
