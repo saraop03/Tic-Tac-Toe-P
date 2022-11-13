@@ -6,14 +6,15 @@
 #include "utils.h"
 #include "menu.h"
 #include "jogar.h"
+#include <stdio.h>
 
 //jogar
-void tabuleiroGrande(char **tabuleiroG){
+void tabuleiroGrande(char **tabuleiroG){//mostra o tablueiro grande
     printf("\nTabuleiro grande:\n");
     mostraMat(tabuleiroG, 3, 3);
 }
 
-void mudaGrande(int *l,int *c){
+void mudaGrande(int *l,int *c){//muda o valor das coordenadas para depois ser possiverl colocar a jogada inserida pelo utilizador
     if (*l == 3)
         *l = 1;
     if (*c == 3)
@@ -33,7 +34,7 @@ void mudaGrande(int *l,int *c){
     }
 }
 
-void verificaVit(char **tabuleiro, int l, int c, char **tabuleiroG){
+void verificaVit(char **tabuleiro, int l, int c, char **tabuleiroG){//verifica se o mini-tabuleiro tem uma linha, coluna ou diagonal completa
     //Verifica linha
     if (tabuleiro[l][c] == tabuleiro[l][c+1] && tabuleiro[l][c] == tabuleiro[l][c+2] && tabuleiro[l][c] != '_' && tabuleiro[l][c+1] != '_' && tabuleiro[l][c+2] != '_') {
         if (tabuleiro[l][c] == 'x') {
@@ -123,7 +124,7 @@ void verificaVit(char **tabuleiro, int l, int c, char **tabuleiroG){
     }
 }
 
-void existe(char **tabuleiro,int *l,int *c){
+void existe(char **tabuleiro,int *l,int *c){//verifica se já existe alguma jogada naquela posição
     char pos;
     do {
         pos = getPos(tabuleiro, *l, *c);//recebe a posição
@@ -135,7 +136,7 @@ void existe(char **tabuleiro,int *l,int *c){
     } while (pos == 'x' || pos == 'o');//verifica se já existe alguma jogada
 }
 
-void fora(int *l, int *c){
+void fora(int *l, int *c){//verifica se a jogada é fora do tabuleiro
     do{
         if(*l > 8 || *c > 8 || *l > 8 && *c > 8) {
             printf("Essas coordenadas não correspondem ao oitavo mini-tabuleiro!\n");
@@ -145,12 +146,12 @@ void fora(int *l, int *c){
     } while(*l > 8 || *c > 8 || *l > 8 && *c > 8);
 }
 
-int existeG(char **tabuleiroG,int l,int c){
+int existeG(char **tabuleiroG,int l,int c){//verifica se o mini-tabuleiro já tem vitoria
     char pos;
     mudaGrande(&l,&c);
 
     pos = getPos(tabuleiroG, l, c);//recebe a posição
-    if (pos == 'x' || pos == 'o') {//para não permitir que percorra o ciclo na primeira vez
+    if (pos == 'x' || pos == 'o') {
         printf("Esse mini-tabuleiro já tem um vencedor!\n");
         return 1;
     }
@@ -158,7 +159,7 @@ int existeG(char **tabuleiroG,int l,int c){
         return 0;
 }
 
-void colocaJogada(char **tabuleiro, int l, int c, int jogada){
+void colocaJogada(char **tabuleiro, int l, int c, int jogada){//coloca a jogada no tabuleiro
     if (jogada == 1) {
         setPos(tabuleiro, l, c, 'x');
         jogada = 2;
@@ -168,7 +169,7 @@ void colocaJogada(char **tabuleiro, int l, int c, int jogada){
     }
 }
 
-void ver(int la, int ca, int *saltar){
+void ver(int la, int ca, int *saltar){//restringe qual o mini-tabuleiro
     if (la == 0 && ca == 0 || la == 0 && ca == 3 || la == 0 && ca == 6 || la == 3 && ca == 0 ||
         la == 3 && ca == 3 || la == 3 && ca == 6 || la == 6 && ca == 0 || la == 6 && ca == 3 ||
         la == 6 && ca == 6)
@@ -207,7 +208,7 @@ void ver(int la, int ca, int *saltar){
         *saltar = 8;
 }
 
-int cheio(char **tabuleiro, int l, int c){
+int cheio(char **tabuleiro, int l, int c){//verifica se o mini-tabuleiro já está cheio
     int contar = 0;
     for (l = 0 ; l < 9 ; l++){
         for (c = 0 ; c < 9 ; c++){
@@ -221,7 +222,7 @@ int cheio(char **tabuleiro, int l, int c){
         return 0;
 }
 
-int verificaVitG(char **tabuleiroG, int l, int c){
+int verificaVitG(char **tabuleiroG, int l, int c){//verifica se existe vitória no tabuleiro grande
     //Verifica linha
     if (tabuleiroG[l][c] == tabuleiroG[l][c+1] && tabuleiroG[l][c] == tabuleiroG[l][c+2] && tabuleiroG[l][c] != '_' && tabuleiroG[l][c+1] != '_' && tabuleiroG[l][c+2] != '_') {
         if (tabuleiroG[l][c] == 'x')
@@ -278,7 +279,7 @@ int verificaVitG(char **tabuleiroG, int l, int c){
     return 0;
 }
 
-void existeC(char **tabuleiro,int *l,int *c){
+void existeC(char **tabuleiro,int *l,int *c){//verifica se o mini-tabuleiro já tem vitoria(computador)
     char pos;
     do {
         pos = getPos(tabuleiro, *l, *c);//recebe a posição
@@ -289,13 +290,13 @@ void existeC(char **tabuleiro,int *l,int *c){
     } while (pos == 'x' || pos == 'o');//verifica se já existe alguma jogada
 }
 
-void foraC(char **tabuleiro, int *l, int *c){
+void foraC(char **tabuleiro, int *l, int *c){//verifica se a jogada é fora do tabuleiro(computador)
     *l = intUniformRnd(0, 8);
     *c = intUniformRnd(0, 8);
     existeC(tabuleiro, l, c);
 }
 
-int cheioC(char **tabuleiro, int l, int c){
+int cheioC(char **tabuleiro, int l, int c){//verifica se o mini-tabuleiro já está cheio(computador)
     int contar = 0;
     for (l = 0 ; l < 9 ; l++){
         for (c = 0 ; c < 9 ; c++){
@@ -309,7 +310,7 @@ int cheioC(char **tabuleiro, int l, int c){
         return 0;
 }
 
-int grava_lista(pjogadas p, char* nome){
+int grava_lista(pjogadas p, char* nome){//grava em ficheiro de texto caso haja vitória no tabuleiro grande
 
     FILE *f;
     f = fopen(nome, "wt");
@@ -325,6 +326,7 @@ int grava_lista(pjogadas p, char* nome){
         fclose(f);
     }
     return 1;
+
 }
 
 

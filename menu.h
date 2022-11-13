@@ -26,6 +26,5 @@ void leDados(pjogadas *p, int *njogadas);
 
 void grava_lista_bin(pjogadas p, int njogadas);
 
-void teste(pjogadas p);
 
 #endif //MAIN_C_MENU_H

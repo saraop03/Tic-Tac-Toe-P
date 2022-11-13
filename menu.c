@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "menu.h"
 #include "jogar.h"
+#include <stdio.h>
 
 //menu
 
@@ -20,7 +21,7 @@ void preenche(pjogadas p, int jogador, int l, int c){
     p->prox = NULL;
 }
 
-pjogadas insere_final (pjogadas p, int jogador, int l, int c) {
+pjogadas insere_final (pjogadas p, int jogador, int l, int c) { //guarda na lista ligada a jogada realizada
     pjogadas novo, aux;
     novo = malloc(sizeof(jogadas));
     if (novo == NULL){
@@ -40,9 +41,9 @@ pjogadas insere_final (pjogadas p, int jogador, int l, int c) {
     return p;
 }
 
-void verJogadas(int njogadas, pjogadas p){
+void verJogadas(int njogadas, pjogadas p){//mostra o numero de jogadas anteriores que o utilizador pretende ver
     pjogadas novo;
-    int conta_total = 0 , conta_sub = 0 , pos = 0, i = njogadas;
+    int conta_total = 0 , conta_sub = 0 , pos = 0;
 
     novo = p;
 
@@ -57,7 +58,10 @@ void verJogadas(int njogadas, pjogadas p){
     printf("-------------------------------------------------------");
     while (novo != NULL){
         if (pos > conta_sub) {
-            if (novo->jogador == 1)
+            if (novo->jogador
+
+
+            == 1)
                 printf("\nO jogador 2 inseriu as coordenadas (%d,%d)\n", novo->l, novo->c);
             else
                 printf("\nO jogador 1 inseriu as coordenadas (%d,%d)\n", novo->l, novo->c);
@@ -68,7 +72,7 @@ void verJogadas(int njogadas, pjogadas p){
     printf("-------------------------------------------------------");
 }
 
-void menuJ(pjogadas jogo, int njogadas, int *sair){
+void menuJ(pjogadas jogo, int njogadas, int *sair){//menu que aparece antes de cada jogada
     int verJ , menu , realizar;
     printf("\nPrima 0 se pretende aceder ao menu:");
     scanf("%d", &menu);
@@ -91,7 +95,7 @@ void menuJ(pjogadas jogo, int njogadas, int *sair){
     }
 }
 
-void leDados(pjogadas *p, int *njogadas){
+void leDados(pjogadas *p, int *njogadas){//le os dados guardados no ficheiro binario
     FILE *f;
     jogadas lista ;
     *njogadas = 0;
@@ -110,7 +114,7 @@ void leDados(pjogadas *p, int *njogadas){
 
 }
 
-void grava_lista_bin(pjogadas p, int njogadas){
+void grava_lista_bin(pjogadas p, int njogadas){//grava o ficheiro binario
 
     FILE *f;
     f = fopen("jogo.bin", "wb");
@@ -127,16 +131,3 @@ void grava_lista_bin(pjogadas p, int njogadas){
     fclose(f);
 }
 
-/*void teste(pjogadas p){
-    while(p!=NULL){
-        if(p->jogador == 1) {
-            p->jogador = 2;
-            printf("jogador: %d # %d,%d\n", p->jogador, p->l, p->c);
-        }
-        else {
-            p->jogador = 1;
-            printf("jogador: %d # %d,%d\n", p->jogador, p->l, p->c);
-        }
-        p = p->prox;
-    }
-}*/

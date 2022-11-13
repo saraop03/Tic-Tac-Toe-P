@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "jogar.h"
 
+
 int main() {
     pjogadas jogo = NULL;
     char **tabuleiro, **tabuleiroG, nomeF;
@@ -54,7 +55,6 @@ int main() {
     }
     if(op == 1) {
         printf("Está a jogar contra uma pessoa\n");
-
 
         do {
             if (jogador == 1) {
@@ -462,13 +462,18 @@ int main() {
                     vitoria = 0;
         } while (vitoria != 1);
         //Guardar em ficheiro de texto
-        if (vitoria == 1) {
-            printf("Insira o nome com o qual quer guardar o ficheiro:\t");
-            scanf("%s", &nomeF);
 
-            if (grava_lista(jogo, &nomeF) == 1)
-                printf("Ficheiro guardado com sucesso");
+        while(jogo!=NULL){
+            printf("ola");
+            jogo=jogo->prox;
         }
+
+        printf("Insira o nome com o qual quer guardar o ficheiro:\t");
+        scanf("%s", &nomeF);
+
+        if (grava_lista(jogo, &nomeF) == 1)
+            printf("Ficheiro guardado com sucesso");
+
     }
     else if(op == 2) {
         printf("Está a jogar contra o computador\n");
@@ -1148,12 +1153,11 @@ int main() {
 
             } while (vitoria != 1);
             //Guardar em ficheiro de texto
-            if (vitoria == 1) {
                 printf("Insira o nome com o qual quer guardar o ficheiro:\t");
                 scanf("%s", &nomeF);
 
                 if (grava_lista(jogo, &nomeF) == 1)
                     printf("Ficheiro guardado com sucesso");
-            }
+
         }
     }

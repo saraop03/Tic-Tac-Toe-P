@@ -71,3 +71,5 @@ void mostraMat(char **p, int nLin, int nCol){
 }
 
 
+
+
